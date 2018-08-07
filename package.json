@@ -125,6 +125,7 @@
     "lint:styles": "yarn stylelint",
     "precommit": "lint-staged",
     "prettier": "prettier --write --single-quote --trailing-comma=none 'storybook/**/*.js' 'packages/**/src/**/*.js'",
+    "now-build": "yarn build:docs",
     "semantic-release": "lerna-semantic-release pre && lerna-semantic-release post && lerna-semantic-release perform",
     "start": "concurrently \"yarn storybook:run\" \"yarn storybook:openurl\"",
     "start:docs": "yarn build && lerna run develop --scope=@patternfly/react-docs --stream",

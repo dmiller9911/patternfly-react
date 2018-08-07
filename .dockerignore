@@ -1,0 +1,11 @@
+*
+!packages/react-core
+!packages/react-docs
+!packages/react-styles
+!packages/react-tokens
+!lerna.json
+!package.json
+!yarn.lock
+!.babelrc
+!.babelrc.js
+!scripts/*.js
