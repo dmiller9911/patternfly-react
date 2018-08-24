@@ -84,6 +84,9 @@ class Navigation extends React.Component {
               ))}
             </NavigationItemGroup>
           )}
+          <NavigationItemGroup title="Other Packages">
+            <NavigationItem to="/react-syntax-highlighter/">react-syntax-highlighter</NavigationItem>
+          </NavigationItemGroup>
         </div>
       </div>
     );

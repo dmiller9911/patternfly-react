@@ -25,6 +25,7 @@ exports.modifyWebpackConfig = ({ config, stage }) => {
       alias: {
         '@patternfly/react-core': path.resolve(__dirname, '../react-core/src'),
         '@patternfly/react-styles': path.resolve(__dirname, '../react-styles/src'),
+        '@patternfly/react-syntax-highlighter': path.resolve(__dirname, '../react-syntax-highlighter/src'),
         react: path.resolve(__dirname, 'node_modules/react'),
         'react-dom': path.resolve(__dirname, 'node_modules/react-dom')
       }
@@ -71,7 +72,7 @@ exports.createPages = async ({ boundActionCreators, graphql }) => {
           }
         }
       }
-      examples: allFile(filter: { relativePath: { glob: "**/examples/!(*.styles).js" } }) {
+      examples: allFile(filter: { absolutePath: { glob: "**/examples/!(*.styles).js" } }) {
         edges {
           node {
             ...DocFile
@@ -82,6 +83,7 @@ exports.createPages = async ({ boundActionCreators, graphql }) => {
   `);
   const docsComponentPath = path.resolve(__dirname, './src/components/componentDocs');
   docs.edges.forEach(({ node: doc }) => {
+    const packageName = getPacakgeNameFromPath(doc.absolutePath);
     const filePath = path.resolve(__dirname, '.tmp', doc.base);
     const content = `
     import React from 'react';
@@ -91,15 +93,18 @@ exports.createPages = async ({ boundActionCreators, graphql }) => {
     export default () => <ComponentDocs {...docs} />
     `;
     fs.outputFileSync(filePath, content);
+    const docDir = path.dirname(doc.relativePath) === '.' ? '' : path.dirname(doc.relativePath);
     boundActionCreators.createPage({
-      path: `/${path.dirname(doc.relativePath).toLowerCase()}`,
+      path: `/${packageName}/${docDir.toLowerCase()}`,
       component: filePath
     });
   });
 
   examples.edges.forEach(({ node: example }) => {
-    const examplePath = `/${path.dirname(example.relativePath).toLowerCase()}/${paramCase(example.name)}`;
-
+    const packageName = getPacakgeNameFromPath(example.absolutePath);
+    const examplePath = `/${packageName}/${path.dirname(example.relativePath).toLowerCase()}/${paramCase(
+      example.name
+    )}`;
     boundActionCreators.createPage({
       path: examplePath,
       layout: 'example',
@@ -107,6 +112,11 @@ exports.createPages = async ({ boundActionCreators, graphql }) => {
     });
   });
 };
+
+function getPacakgeNameFromPath(absPath) {
+  const parts = absPath.split('/');
+  return parts[parts.indexOf('packages') + 1];
+}
 
 exports.modifyBabelrc = ({ stage, babelrc }) => {
   babelrc.plugins.push(require.resolve('babel-plugin-react-docgen'));

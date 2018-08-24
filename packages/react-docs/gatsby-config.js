@@ -13,6 +13,13 @@ module.exports = {
         path: resolve(__dirname, '../react-core/src')
       }
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `syntax-highlighter`,
+        path: resolve(__dirname, '../react-syntax-highlighter/src')
+      }
+    },
     'gatsby-transformer-react-docgen'
   ]
 };

@@ -12,6 +12,7 @@
     "@patternfly/react-icons": "*",
     "@patternfly/react-styles": "^2.0.0",
     "@patternfly/react-tokens": "^1.0.0",
+    "@patternfly/react-syntax-highlighter": "*",
     "babel-plugin-react-docgen": "^v1.9.0",
     "gatsby": "^1.9.247",
     "gatsby-link": "^1.6.40",
